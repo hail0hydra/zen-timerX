@@ -1,0 +1,36 @@
+#!/bin/bash
+
+TIME=$1
+
+# If no time passed, ask via Zenity
+if [[ -z "$TIME" ]]; then
+  TIME=$(zenity --entry \
+    --title="⏰ Set Timer" \
+    --text="Enter time (e.g. 10s, 5m, 2h):")
+  # If user cancels, exit
+  [[ -z "$TIME" ]] && exit 0
+fi
+
+# Validate format (number + s/m/h)
+if [[ ! "$TIME" =~ ^[0-9]+[smh]$ ]]; then
+  zenity --error --title="Invalid input" \
+    --text="Please enter like 10s, 5m, or 2h."
+  exit 1
+fi
+
+# Parse
+UNIT=${TIME: -1}
+VALUE=${TIME::-1}
+
+case $UNIT in
+  s) TOTAL=$((VALUE)) ;;
+  m) TOTAL=$((VALUE * 60)) ;;
+  h) TOTAL=$((VALUE * 3600)) ;;
+esac
+
+# Run in background
+(
+  sleep "$TOTAL"
+  notify-send "⏰ Timer Done!" "Your $TIME timer has finished."
+  paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+) & disown
