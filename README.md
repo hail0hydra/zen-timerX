@@ -1,4 +1,4 @@
-# Linux Timer
+# Zenity Timer (Linux)
 
 - Simple timer for `Linux` environments (irrespective of the Desktop-Environment or Window manager). Utilises `zenity` for the frontend (user input).
 
@@ -16,7 +16,7 @@
 
 ```bash
 # clone it
-git clone https://github.com/hail0hydra/linux-timer
+git clone https://github.com/hail0hydra/zen-timerX.git
 cd linux-timer
 
 # create a local desktop entry and local bin entry (skips itself if exists)
